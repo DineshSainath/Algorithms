@@ -1,0 +1,87 @@
+
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+
+typedef struct point
+{
+       double x;
+       double y;
+}point;
+ 
+float orientation(point p, point q, point r)
+{
+    float val = (q.y - p.y) * (r.x - q.x)-(q.x - p.x) * (r.y - q.y);
+    if (val == 0)
+       return 0;
+    if(val>0)
+       return 1;
+    else
+       return 2;
+}
+
+int main()
+{
+       long long int n;
+       point P[30000];
+       float x,y;
+       scanf("%lld",&n);
+       int i;
+ 
+       for(i=0;i<n;i++)
+       {
+              scanf("%f",&x);
+              scanf("%f",&y);
+              P[i].x = x;
+              P[i].y = y;
+       }
+ 
+       int  p= 0;
+       int  l;
+       for(i=1;i<n;i++)
+       {
+              if(P[p].x > P[i].x)
+              {
+                     p = i;
+              }
+              else if(P[p].x==P[i].x && P[p].y > P[i].y)
+              {
+                     p = i;
+              }
+       }
+       l =p;
+       int  q = (p+1)%n;
+ 
+       point result[10001];
+       int  count =0;
+       if(n<3)
+       {
+              for(i=0;i<n-1;i++)
+              {
+                     printf("%.2f %.2f\n",P[i].x,P[i].y);
+                     result[count]=P[i];
+                     count++;
+              }
+       }
+       else
+       {
+              do
+              {
+                     printf("%.2f %.2f\n",P[p].x,P[p].y);
+                     result[count]=P[p];
+                     count++;
+                     for(i=0;i<n;i++)
+                     {
+                            if(orientation(P[p],P[i],P[q])==2)
+                            {
+                                   q = i;
+                            }
+                     }
+                     p = q;
+                     q = (p+1) % n;
+              }while(p!=l);
+       }
+ 
+       return 0;
+}
+ 
